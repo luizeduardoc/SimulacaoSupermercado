@@ -17,14 +17,13 @@ public class Supermercado {
 		this.maiorCompra = Double.MIN_VALUE;
 		caixas = new Caixa[totalCaixas];
 		
-		for(int i = 0; i < totalCaixas; i++) {
-			caixas[i] = new Caixa((int)(Math.random()*10)+1);
-			caixas[i].setIdCaixa(i);
+		for(Caixa c : caixas) {
+			c = new Caixa(15);
 		}
 	}
 	
 	public boolean entradaCliente() {
-		if(Math.random() > 0.6) {
+		if(Math.random() > 0.8) {
 			return true;
 		} else {
 			return false;

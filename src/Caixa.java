@@ -1,6 +1,5 @@
 public class Caixa {
 	
-	private int idCaixa;
 	private int clientesNaFila;
 	private boolean statusCaixa;
 	private int capacidadeCaixa;
@@ -8,14 +7,6 @@ public class Caixa {
 	public Caixa(int capacidadeCaixa) {
 		this.capacidadeCaixa = capacidadeCaixa;
 		this.clientesNaFila = 0;
-	}
-	
-	public int getIdCaixa() {
-		return idCaixa;
-	}
-	
-	public void setIdCaixa(int id) {
-		this.idCaixa = id;
 	}
 	
 	public int getClientesNaFila() {
