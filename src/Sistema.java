@@ -92,6 +92,11 @@ public class Sistema {
 			System.out.println("  9 - Número de caixas parados");
 			System.out.print("Escolha uma opção: ");
 			opcao = in.nextInt();
+			
+			switch(opcao) {
+				
+			
+			}
 		}
 		
 		in.close();
