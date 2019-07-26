@@ -4,19 +4,19 @@ public class Sistema {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		
-		System.out.println("Informe a quantidade de caixas no supermercado: ");
+		System.out.print("Informe a quantidade de caixas no supermercado: ");
 		int totalCaixas = in.nextInt();
-		in.nextLine();
 		Supermercado supermercado = new Supermercado(totalCaixas);
+		in.nextLine();
 		
 		// Simula um dia de funcionamento do supermercado
-		
+	
 		// <horas_funcionamento>*60 / <minutos_cada_interacao> = 56
 		for(int i = 0; i < 56; i++) {
-			
+
 			// 10% de chance de um caixa ficar inativo
 			for(Caixa caixa : supermercado.caixas) {
-				if(Math.random()*10 <= 1) {
+				if(Math.random()*10 <= 5) {
 					caixa.setStatusCaixa(false);
 				}
 			}
@@ -28,23 +28,25 @@ public class Sistema {
 				}
 			}
 			
-			if(supermercado.entradaCliente()) {
-				// Caso todos os caixas estiverem cheios
-				if(supermercado.todosCaixasLotados()) {
-					double valorPerdido = valorGastoCliente();
-					supermercado.addTotalPerdido(valorPerdido);
+			if(supermercado.entradaCliente()) {				
 				// Depois da entrada de um cliente, é verificado qual fila é a menor para o cliente poder entrar nela
-				} else {
-					int caixaComMenorFila = 0;
-					for(int j = 0; j < supermercado.caixas.length; j++) {
-						if(supermercado.caixas[j].getClientesNaFila() < supermercado.caixas[caixaComMenorFila].getClientesNaFila()) {
-							if(supermercado.caixas[caixaComMenorFila].getStatusCaixa()) {
-								caixaComMenorFila = j;	
-							}
+				
+				int caixaComMenorFila = 0;
+				for(int j = 0; j < supermercado.caixas.length; j++) {
+					if(supermercado.caixas[j].getClientesNaFila() < supermercado.caixas[caixaComMenorFila].getClientesNaFila()) {
+						if(supermercado.caixas[caixaComMenorFila].getStatusCaixa() && supermercado.caixas[caixaComMenorFila].getClientesNaFila() >= supermercado.caixas[caixaComMenorFila].getCapacidadeCaixa() ) {
+							caixaComMenorFila = j;	
 						}
 					}
-					
+				}
+				
+				if(!(supermercado.caixas[caixaComMenorFila].getClientesNaFila() >= supermercado.caixas[caixaComMenorFila].getCapacidadeCaixa())) {
 					supermercado.caixas[caixaComMenorFila].addClienteFila();
+				} else {
+					System.out.println("Todos os caixas estão lotados!");
+					double valorPerdido = valorGastoCliente();
+					supermercado.addTotalPerdido(valorPerdido);
+					supermercado.addClientePerdido();
 				}
 			}
 			
@@ -53,30 +55,32 @@ public class Sistema {
 			//valor de suas compras
 			for(int j = 0; j < totalCaixas; j++) {
 				if(Math.random()*10 > 5) {
-					double valorCompra = valorGastoCliente();
-					supermercado.caixas[j].subClienteFila();
-					supermercado.addClienteAtendido();
-					supermercado.addTotalFaturado(valorCompra);
-					
-					// Verifica se a compra do cliente é a maior ou menor compra
-					if(valorCompra > supermercado.getMaiorCompra()) {
-						supermercado.setMaiorCompra(valorCompra);
-					}
-					
-					if(valorCompra < supermercado.getMenorCompra()) {
-						supermercado.setMenorCompra(valorCompra);
-					}
+					if(supermercado.caixas[j].getClientesNaFila() > 0) {
+						double valorCompra = valorGastoCliente();
+						supermercado.caixas[j].subClienteFila();
+						supermercado.addClienteAtendido();
+						supermercado.addTotalFaturado(valorCompra);
+						
+						// Verifica se a compra do cliente é a maior ou menor compra
+						if(valorCompra > supermercado.getMaiorCompra()) {
+							supermercado.setMaiorCompra(valorCompra);
+						}
+						
+						if(valorCompra < supermercado.getMenorCompra()) {
+							supermercado.setMenorCompra(valorCompra);
+						}
+					}										
 				}
 			}
 		}
 		
-		while(supermercado.todosCaixaLiberados()) {
-			for(Caixa caixa : supermercado.caixas) {
-				if(!caixa.getStatusCaixa()) {
-					caixa.setStatusCaixa(true);
-				}
-			}
-		}
+//		while(supermercado.todosCaixaLiberados()) {
+//			for(Caixa caixa : supermercado.caixas) {
+//				if(!caixa.getStatusCaixa()) {
+//					caixa.setStatusCaixa(true);
+//				}
+//			}
+//		}
 				
 		int opcao = 0;
 		while(opcao >= 0) {
@@ -94,8 +98,24 @@ public class Sistema {
 			opcao = in.nextInt();
 			
 			switch(opcao) {
-				
-			
+				case 1:
+					System.out.printf("\nO total faturado pelo supermercado é: %.2f\n", supermercado.getTotalFaturado());
+					break;
+				case 2:
+					System.out.printf("\nO total faturado pelo supermercado é: %.2f\n", supermercado.getTotalPerdido());					
+					break;
+				case 3:
+					System.out.printf("\nNúmero de clientes não atendidos: %d\n", supermercado.getTotalClientesPerdidos());
+					break;
+				case 4:
+					System.out.printf("\nNúmero de clientes atendidos: %d\n", supermercado.getTotalClientesAtendidos());
+					break;
+				case 5:
+					System.out.printf("\nMenor compra realizada: %.2f\n", supermercado.getMenorCompra());
+					break;
+				case 6:
+					System.out.printf("\nMaior compra realizada: %.2f\n", supermercado.getMaiorCompra());
+					break;
 			}
 		}
 		

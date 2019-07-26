@@ -15,23 +15,32 @@ public class Supermercado {
 		this.totalCaixas = totalCaixas;
 		this.menorCompra = Double.MAX_VALUE;
 		this.maiorCompra = Double.MIN_VALUE;
-		caixas = new Caixa[totalCaixas];
 		
-		for(Caixa c : caixas) {
-			c = new Caixa(15);
+		caixas = new Caixa[totalCaixas];
+		for(int i = 0; i < totalCaixas; i++) {
+			caixas[i] = new Caixa(5);
+			caixas[i].setId(i);
 		}
 	}
 	
 	public boolean entradaCliente() {
-		if(Math.random() > 0.8) {
+		if(Math.random() >= 0) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
+	public double getTotalFaturado() {
+		return totalFaturado;
+	}
+	
 	public void addClienteAtendido() {
 		this.totalClientesAtendidos++;
+	}
+	
+	public void addClientePerdido() {
+		this.totalClientesPerdidos++;
 	}
 	
 	public void addTotalFaturado(double totalFaturado) {
@@ -40,6 +49,18 @@ public class Supermercado {
 	
 	public void addTotalPerdido(double totalPerdido) {
 		this.totalPerdido += totalPerdido;
+	}
+	
+	public int getTotalClientesPerdidos() {
+		return this.totalClientesPerdidos;
+	}
+	
+	public int getTotalClientesAtendidos() {
+		return this.totalClientesAtendidos;
+	}
+	
+	public double getTotalPerdido() {
+		return totalPerdido;
 	}
 	
 	public double getMaiorCompra() {

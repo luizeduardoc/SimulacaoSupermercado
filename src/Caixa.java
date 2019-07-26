@@ -1,5 +1,6 @@
 public class Caixa {
 	
+	private int id;
 	private int clientesNaFila;
 	private boolean statusCaixa;
 	private int capacidadeCaixa;
@@ -15,6 +16,7 @@ public class Caixa {
 	
 	public void addClienteFila() {
 		clientesNaFila++;
+		System.out.printf("Pessoas na fila do caixa %d: %d\n", id, clientesNaFila);
 	}
 	
 	public void subClienteFila() {
@@ -27,6 +29,10 @@ public class Caixa {
 		} else {
 			return false;
 		}
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public boolean getStatusCaixa() {
